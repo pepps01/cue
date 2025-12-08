@@ -1,0 +1,38 @@
+services:
+  # ================= USER SERVICE =================
+  main:
+    build:
+      context: ./main
+      dockerfile: Dockerfile
+    container_name: main-cue
+    restart: unless-stopped
+    volumes:
+      - ./main:/var/www/html/main
+      - ./main/vendor:/var/www/html/main/vendor
+      - /var/www/html/storage
+      - /var/www/html/bootstrap/cache
+    expose:
+      - "9000" # PHP-FPM port
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-cue
+    restart: unless-stopped
+    ports:
+      - "8080:80" # Access via localhost:8080
+    volumes:
+      - ./main:/var/www/html/main
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./loyalty:/var/www/html/loyalty
+    depends_on:
+      - main
+      # - loyalty
+    networks:
+      - backend
+
+
+networks:
+  backend:
