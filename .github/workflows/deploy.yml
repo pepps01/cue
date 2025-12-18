@@ -16,7 +16,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           script: |
             cd /home/ubuntu/app-directory
             git pull origin main
