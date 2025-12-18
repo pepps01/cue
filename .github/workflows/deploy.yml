@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@main
+        uses: appleboy/ssh-action@master
         env:
           SSH_PRIVATE_KEY: ${{ secrets.CUE_SSH_KEY }} 
           REMOTE_HOST: ${{ secrets.HOST_NAME }} 
