@@ -18,34 +18,31 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.CUE_SSH_KEY }}
           script: |
-            # 1. Define where the app should live
+            # 1. Define the correct root directory
             APP_DIR="/home/ubuntu/cue"
-            REPO_URL="https://github.com/pepps01/cue.git"
 
-            # 2. Smart Initial Setup
-            # If the folder doesn't exist OR isn't a git repo, clone it fresh
-            if [ ! -d "$APP_DIR/.git" ]; then
-              echo "Re-initializing project folder..."
-              sudo rm -rf "$APP_DIR"
-              git clone $REPO_URL $APP_DIR
+            # 2. Check and enter the directory
+            if [ -d "$APP_DIR" ]; then
+              cd "$APP_DIR"
+              git pull origin main
+            else
+              # Initial clone if the folder is missing
+              git clone https://github.com/pepps01/cue.git "$APP_DIR"
+              cd "$APP_DIR"
             fi
 
-            # 3. Enter the directory
-            cd $APP_DIR
-
-            # 4. Update the code
-            git pull origin main
-
-            # 5. Build and Restart Containers
-            # Checks if docker-compose.yml is there to avoid the "file not found" error
-            if [ -f "docker-compose.yml" ]; then
+            # 3. USE THE CORRECT FILENAME
+            # Your screenshot shows 'docker-compose.yaml'
+            if [ -f "docker-compose.yaml" ]; then
               docker compose up -d --build
-              
-              # 6. Run Laravel Maintenance
-              docker compose exec -T app php artisan migrate --force
-              docker compose exec -T app php artisan config:cache
-              docker compose exec -T app php artisan route:cache
+
+              # 4. RUN LARAVEL COMMANDS IN THE 'main' SERVICE
+              # Your docker-compose.yaml names the service 'main'
+              docker compose exec -T main php artisan migrate --force
+              docker compose exec -T main php artisan config: cache
+              docker compose exec -T main php artisan route: cache
             else
-              echo "Error: docker-compose.yml not found!"
+              echo "CRITICAL ERROR: docker-compose.yaml not found in $(pwd)"
+              ls -la # Diagnostic: List files to help debug if it fails again
               exit 1
             fi
