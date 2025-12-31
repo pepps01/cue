@@ -35,6 +35,7 @@ jobs:
             # Your screenshot shows 'docker-compose.yaml'
             if [ -f "docker-compose.yaml" ]; then
               docker compose up -d --build
+              docker compose exec -T main composer install --no-dev --optimize-autoloader
 
               # 4. RUN LARAVEL COMMANDS IN THE 'main' SERVICE
               # Your docker-compose.yaml names the service 'main'
