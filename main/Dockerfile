@@ -32,13 +32,16 @@ RUN php artisan config:clear \
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
-# RUN pecl install rdkafka \
-#     && docker-php-ext-enable rdkafka
-# Copy the rest of the application
-COPY . .
+    # RUN pecl install rdkafka \
+    #     && docker-php-ext-enable rdkafka
+    # Copy the rest of the application
+    COPY . .
+
+RUN php artisan storage:link || true
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 
 EXPOSE 9000
 
