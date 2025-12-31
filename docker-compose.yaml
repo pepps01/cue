@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./main:/var/www/html
-      # - ./main/vendor:/var/www/html/vendor
+      - ./main/vendor:/var/www/html/vendor
       # - /var/www/html/storage
       # - /var/www/html/bootstrap/cache
     # expose:
@@ -23,7 +23,7 @@ services:
     ports:
       - "8080:80" # Access via localhost:8080
     volumes:
-      - ./main:/var/www/html/
+      - ./main:/var/www/html
       # - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
