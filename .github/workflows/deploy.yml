@@ -17,7 +17,6 @@ jobs:
           host: ${{ secrets.HOST_NAME }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.CUE_SSH_KEY }}
-          
           script: |
             # 1. Define the correct root directory
             APP_DIR="/home/ubuntu/cue"
