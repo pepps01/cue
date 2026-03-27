@@ -7,7 +7,7 @@ services:
     container_name: main-cue
     restart: unless-stopped
     volumes:
-      - ./main:/var/www/html
+      - ./main:/var/www/html/main
       - ./main/vendor:/var/www/html/vendor
       # - /var/www/html/storage
       # - /var/www/html/bootstrap/cache
