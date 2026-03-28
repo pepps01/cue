@@ -14,14 +14,14 @@ jobs:
       - name: Add GitHub IP to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.HOST_NAME }} >> ~/.ssh/known_hosts
 
       
       - name: Test SSH Connection
         run: |
           echo "Testing SSH connection..."
           timeout 10s ssh -v -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo 'Connected successfully'"
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_NAME }} "echo 'Connected successfully'"
         continue-on-error: true
 
       - name: Deploy to EC2
