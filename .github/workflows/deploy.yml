@@ -10,6 +10,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Debug SSH Key
+        run: |
+          echo "Testing SSH key format..."
+          echo "${{ secrets.CUE_SSH_KEY }}" | head -1
+          echo "Key length: ${{ secrets.CUE_SSH_KEY }} | wc -c"
 
       - name: Add GitHub IP to known_hosts
         run: |
