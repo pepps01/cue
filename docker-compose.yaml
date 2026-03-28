@@ -6,15 +6,29 @@ services:
       dockerfile: Dockerfile
     container_name: main-cue
     restart: unless-stopped
+    command:
+        sh -c "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && php-fpm"
+        sh -c "chown -R www-data:www-data /var/www/html/main/storage /var/www/html/main/bootstrap/cache && php-fpm"
     volumes:
       - ./main:/var/www/html
       - ./main/vendor:/var/www/html/vendor
+      # - ./main:/var/www/html/main
+      # - ./main/vendor:/var/www/html/vendor
+      - ./main/storage:/var/www/html/storage
+      - ./main/database:/var/www/html/database
+      - ./main/bootstrap/cache:/var/www/html/bootstrap/cache
+      - ./main/local.ini:/usr/local/etc/php/conf.d/custom.ini
       # - /var/www/html/storage
       # - /var/www/html/bootstrap/cache
     # expose:
       # - "9000" # PHP-FPM port
     networks:
       - backend
+
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
   nginx:
     image: nginx:alpine
