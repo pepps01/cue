@@ -23,11 +23,11 @@ jobs:
           ssh-keyscan -H ${{ secrets.HOST_NAME }} >> ~/.ssh/known_hosts
 
       
-      - name: Test SSH Connection
-        run: |
-          echo "Testing SSH connection..."
-          timeout 10s ssh -v -i /tmp/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
-          ${{ secrets.USERNAME }}@${{ secrets.HOST_NAME }} "echo 'Connected successfully'"
+      # - name: Test SSH Connection
+      #   run: |
+      #     echo "Testing SSH connection..."
+      #     timeout 10s ssh -v -i /tmp/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
+      #     ${{ secrets.USERNAME }}@${{ secrets.HOST_NAME }} "echo 'Connected successfully'"
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
