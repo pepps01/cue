@@ -1,74 +1,28 @@
-name: Deploy Laravel App
+
+name: Test SSH Connection Only
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Debug SSH Key
+      - name: Debug SSH Key Format
         run: |
-          echo "Testing SSH key format..."
+          echo "First line of key:"
           echo "${{ secrets.CUE_SSH_KEY }}" | head -1
-          echo "Key length: ${{ secrets.CUE_SSH_KEY }}" | wc -c
-
-      - name: Add GitHub IP to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOST_NAME }} >> ~/.ssh/known_hosts
-
+          echo "Key length:"
+          echo "${{ secrets.CUE_SSH_KEY }}" | wc -c
       
-      # - name: Test SSH Connection
-      #   run: |
-      #     echo "Testing SSH connection..."
-      #     timeout 10s ssh -v -i /tmp/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
-      #     ${{ secrets.USERNAME }}@${{ secrets.HOST_NAME }} "echo 'Connected successfully'"
-
-      - name: Deploy to EC2
+      - name: Test SSH Connection
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_NAME }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.CUE_SSH_KEY }}
-          port: ${{ secrets.PORT || 22 }}
-          timeout: 60s
-          envs: GITHUB_REF,GITHUB_SHA
-          
           script: |
-            # 1. Define the correct root directory
-            APP_DIR="/home/ubuntu/cue"
-
-            # 2. Check and enter the directory
-            if [ -d "$APP_DIR" ]; then
-              cd "$APP_DIR"
-              git pull origin main
-            else
-              # Initial clone if the folder is missing
-              git clone https://github.com/pepps01/cue.git "$APP_DIR"
-              cd "$APP_DIR"
-            fi
-
-            # 3. USE THE CORRECT FILENAME
-            # Your screenshot shows 'docker-compose.yaml'
-            if [ -f "docker-compose.yaml" ]; then
-              docker compose up -d --build
-              docker compose exec -T main composer install --no-dev --optimize-autoloader
-
-              # 4. RUN LARAVEL COMMANDS IN THE 'main' SERVICE
-              # Your docker-compose.yaml names the service 'main'
-              # docker compose exec -T main php artisan migrate --force
-
-              docker compose exec -T main php artisan config:cache
-              docker compose exec -T main php artisan optimize
-              docker compose exec -T main php artisan route:cache
-              docker compose exec -T main chown -R www-data:www-data storage bootstrap/cache
-            else
-              echo "CRITICAL ERROR: docker-compose.yaml not found in $(pwd)"
-              ls -la # Diagnostic: List files to help debug if it fails again
-              exit 1
-            fi
+            echo "Connected successfully!"
+            whoami
+            pwd
