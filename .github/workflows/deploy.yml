@@ -38,6 +38,7 @@ jobs:
           port: ${{ secrets.PORT || 22 }}
           timeout: 60s
           envs: GITHUB_REF,GITHUB_SHA
+          
           script: |
             # 1. Define the correct root directory
             APP_DIR="/home/ubuntu/cue"
