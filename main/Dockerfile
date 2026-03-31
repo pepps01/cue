@@ -61,8 +61,23 @@ RUN php artisan storage:link || true
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
-RUN composer require laravel/sanctum
+# RUN composer require laravel/sanctum
+RUN composer require laravel/passport
+RUN composer require aws/aws-sdk-php
+RUN composer require laravel/socialite
+RUN composer require league/flysystem-aws-s3-v3
+RUN composer require pusher/pusher-php-server
+RUN composer require rap2hpoutre/laravel-log-viewer
+RUN composer require toin0u/geocoder-laravel
+RUN composer require tucker-eric/eloquentfilter
+# RUN composer require tipoff/laravel-agora-api
+# RUN composer require tomatophp/laravel-agora
+# RUN composer require taylanunutmaz/agora-token-builder
+# RUN composer require agoraio/agora-php-sdk
+# RUN composer require agoraio/agora-token
+# RUN composer require willywes/agora-sdk-php --ignore-platform-req=ext-*
 # RUN composer require php-amqplib/php-amqplib
+# RUN php artisan migrate --seed
 # Expose PHP-FPM port
 # RUN composer require vladimir-yuldashev/laravel-queue-rabbitmq
 EXPOSE 9000

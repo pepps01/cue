@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\ForceJsonResponse::class,
     ];
 
     /**
@@ -40,19 +41,19 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
-     * The application's middleware aliases.
+     * The application's route middleware.
      *
-     * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
+     * These middleware may be assigned to groups or used individually.
      *
      * @var array<string, class-string|string>
      */
-    protected $middlewareAliases = [
+    protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -60,9 +61,22 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-        'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+        'active' => \App\Http\Middleware\ActiveUserMiddleware::class,
+        'isverified' => \App\Http\Middleware\IsVerifiedMiddleware::class,
+        'merchant' => \App\Http\Middleware\MerchantMiddleware::class,
+        'consumer' => \App\Http\Middleware\ConsumerMiddleware::class,
+        'business_merchants' => \App\Http\Middleware\BusinessMerchantMiddleware::class,
+        'personal_merchants' => \App\Http\Middleware\PersonalMerchantMiddleware::class,
+        'consumer_or_merchant' => \App\Http\Middleware\MerchantAndConsumerMiddleware::class,
+        'driver_or_rider' => \App\Http\Middleware\DriverAndRiderMiddleware::class,
+        'driver' => \App\Http\Middleware\DriverMiddleware::class,
+        'rider' => \App\Http\Middleware\RiderMiddleware::class,
+        'vendor' => \App\Http\Middleware\VendorMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'superadmin' => \App\Http\Middleware\SuperadminMiddleware::class
     ];
 }

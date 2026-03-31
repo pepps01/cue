@@ -9,14 +9,22 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(UsersTableSeeder::class);
+        // $this->call(BankSeeder::class);
+        $this->call(ProductCategorySeeder::class);
+        $this->call(ServiceCategorySeeder::class);
+        $this->call(MerchantCategorySeeder::class);
+        $this->call(TripPricingSeeder::class);
+        $this->call(TripLocationPricingEssentialSeeder::class);
+        $this->call(TripLocationPricingLuxurySeeder::class);
+        $this->call(TripLocationPricingEconomySeeder::class);
+        $this->call(GeneralSettingSeeder::class);
+        $this->call(CarListingSeeder::class);
+        $this->call(RestaurantTypeSeeder::class);
     }
 }
